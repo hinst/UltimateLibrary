@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<CONFIG>
+  <Package Version="4">
+    <PathDelim Value="\"/>
+    <Name Value="UltimateLibrary"/>
+    <Author Value="hinst"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <OtherUnitFiles Value="Log;JobThread;Crap"/>
+        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <Parsing>
+        <SyntaxOptions>
+          <CStyleMacros Value="True"/>
+        </SyntaxOptions>
+      </Parsing>
+      <CodeGeneration>
+        <SmartLinkUnit Value="True"/>
+        <Checks>
+          <IOChecks Value="True"/>
+          <RangeChecks Value="True"/>
+          <OverflowChecks Value="True"/>
+          <StackChecks Value="True"/>
+        </Checks>
+        <VerifyObjMethodCallValidity Value="True"/>
+      </CodeGeneration>
+      <Other>
+        <CompilerMessages>
+          <MsgFileName Value=""/>
+        </CompilerMessages>
+        <CompilerPath Value="$(CompPath)"/>
+      </Other>
+    </CompilerOptions>
+    <Files Count="14">
+      <Item1>
+        <Filename Value="Log\LogManager.pas"/>
+        <UnitName Value="LogManager"/>
+      </Item1>
+      <Item2>
+        <Filename Value="Log\LogWriter.pas"/>
+        <UnitName Value="LogWriter"/>
+      </Item2>
+      <Item3>
+        <Filename Value="Log\LogItem.pas"/>
+        <UnitName Value="LogItem"/>
+      </Item3>
+      <Item4>
+        <Filename Value="Log\LogEntity.pas"/>
+        <UnitName Value="LogEntity"/>
+      </Item4>
+      <Item5>
+        <Filename Value="JobThread\JobThread.pas"/>
+        <UnitName Value="JobThread"/>
+      </Item5>
+      <Item6>
+        <Filename Value="Crap\FPListEnhancer.pas"/>
+        <UnitName Value="FPListEnhancer"/>
+      </Item6>
+      <Item7>
+        <Filename Value="Log\LogObjectEnhancer.pas"/>
+        <UnitName Value="LogObjectEnhancer"/>
+      </Item7>
+      <Item8>
+        <Filename Value="Crap\ThreadEnhancer.pas"/>
+        <UnitName Value="ThreadEnhancer"/>
+      </Item8>
+      <Item9>
+        <Filename Value="Log\ConsoleLogWriter.pas"/>
+        <UnitName Value="ConsoleLogWriter"/>
+      </Item9>
+      <Item10>
+        <Filename Value="Log\LogTextFormat.pas"/>
+        <UnitName Value="LogTextFormat"/>
+      </Item10>
+      <Item11>
+        <Filename Value="Log\DefaultLogTextFormat.pas"/>
+        <UnitName Value="DefaultLogTextFormat"/>
+      </Item11>
+      <Item12>
+        <Filename Value="Log\LogStandardConfig.pas"/>
+        <UnitName Value="LogStandardConfig"/>
+      </Item12>
+      <Item13>
+        <Filename Value="Log\SimpleLogTextFormat.pas"/>
+        <UnitName Value="SimpleTextLogFormat"/>
+      </Item13>
+      <Item14>
+        <Filename Value="Log\LogFormat.pas"/>
+        <UnitName Value="LogFormat"/>
+      </Item14>
+    </Files>
+    <RequiredPkgs Count="1">
+      <Item1>
+        <PackageName Value="FCL"/>
+      </Item1>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>
