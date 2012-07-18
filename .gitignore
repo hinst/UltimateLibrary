@@ -1,0 +1,5 @@
+*.o
+*.compiled
+*.exe
+*.lps
+lib/
