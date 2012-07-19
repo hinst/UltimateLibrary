@@ -20,7 +20,7 @@ type
   public
     constructor Create(const aOwner: TComponent); reintroduce;
   private
-    fWriters: TFPList;
+    fDeferredWriters: TFPList;
     fImmediateWriters: TFPList;
     fJobThread: TJobThread;
     fStandardLogTagToString: IStandardLogTagToString;
@@ -30,7 +30,7 @@ type
     procedure WriteImmediate(const aItem: PLogItem);
     procedure Finalize;
   public
-    property Writers: TFPList read fWriters;
+    property DeferredWriters: TFPList read fDeferredWriters;
     property ImmediateWriters: TFPList read fImmediateWriters;
     property JobThread: TJobThread read fJobThread;
     property StandardLogTagToString: IStandardLogTagToString
@@ -90,7 +90,7 @@ end;
 
 procedure TLogManager.Initialize;
 begin
-  fWriters := TFPList.Create;
+  fDeferredWriters := TFPList.Create;
   fImmediateWriters := TFPList.Create;
   fJobThread := TJobThread.Create;
   JobThread.Start; // Why no? We can start it right now. Idea: make deferred start.
@@ -101,7 +101,7 @@ procedure TLogManager.WriteDeferred(const aItem: PLogItem);
 var
   job: IThreadJob;
 begin
-  job := TWriteLogItemJob.Create(aItem, writers);
+  job := TWriteLogItemJob.Create(aItem, DeferredWriters);
   JobThread.Add(job);
 end;
 
@@ -122,7 +122,7 @@ begin
   JobThread.Terminate;
   JobThread.WaitFor;
   FreeAndNil(fJobThread);
-  FreeAndNil(fWriters);
+  FreeAndNil(fDeferredWriters);
   FreeAndNil(fImmediateWriters);
 end;
 
@@ -130,6 +130,7 @@ procedure TLogManager.Write(const aItem: PLogItem);
 begin
   inc(fItemCounter);
   aItem^.Number := ItemCounter;
+  WriteImmediate(aItem);
   WriteDeferred(aItem);
 end;
 

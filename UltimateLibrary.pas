@@ -9,7 +9,8 @@ interface
 uses
   LogManager, LogWriter, LogItem, LogEntity, JobThread, FPListEnhancer, 
   LogObjectEnhancer, ThreadEnhancer, ConsoleLogWriter, LogTextFormat, 
-  DefaultLogTextFormat, LogStandardConfig, SimpleLogTextFormat, LogFormat;
+  DefaultLogTextFormat, LogStandardConfig, SimpleLogTextFormat, LogFormat, 
+  TextFileLogWriter, ComponentEnhancer, ReversibleCorbaFace;
 
 implementation
 

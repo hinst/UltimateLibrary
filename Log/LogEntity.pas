@@ -14,6 +14,7 @@ type
   { ILog }
 
   ILog = interface
+    procedure Write(const aText: string);
     procedure Write(const aTag: string; const aText: string);
     procedure Write(const aTag: TStandardLogTag; const aText: string);
   end;
@@ -29,6 +30,7 @@ type
   public
     property Manager: TLogManager read fManager;
     property Name: string read fName;
+    procedure Write(const aText: string);
     procedure Write(const aTag: string; const aText: string);
     procedure Write(const aTag: TStandardLogTag; const aText: string);
     destructor Destroy; override;
@@ -43,6 +45,11 @@ begin
   inherited Create;
   fManager := aManager;
   fName := aName;
+end;
+
+procedure TLog.Write(const aText: string);
+begin
+  Write(logTagDebug, aText);
 end;
 
 procedure TLog.Write(const aTag: string; const aText: string);

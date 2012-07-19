@@ -33,7 +33,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="14">
+    <Files Count="17">
       <Item1>
         <Filename Value="Log\LogManager.pas"/>
         <UnitName Value="LogManager"/>
@@ -90,6 +90,18 @@
         <Filename Value="Log\LogFormat.pas"/>
         <UnitName Value="LogFormat"/>
       </Item14>
+      <Item15>
+        <Filename Value="Log\TextFileLogWriter.pas"/>
+        <UnitName Value="TextFileLogWriter"/>
+      </Item15>
+      <Item16>
+        <Filename Value="Crap\ComponentEnhancer.pas"/>
+        <UnitName Value="ComponentEnhancer"/>
+      </Item16>
+      <Item17>
+        <Filename Value="Crap\ReversibleCorbaFace.pas"/>
+        <UnitName Value="ReversibleCorbaFace"/>
+      </Item17>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>

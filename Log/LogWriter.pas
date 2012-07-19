@@ -7,13 +7,17 @@ interface
 
 uses
   Classes, SysUtils,
-  JobThread, LogItem;
+  ReversibleCorbaFace, JobThread, LogItem;
 
 type
-  ILogWriter = interface
+  ILogWriter = interface(IReversibleCorba)
     procedure Write(const aThread: TJobThread; const aItem: PLogItem);
     function GetName: string;
     property Name: string read GetName;
+  end;
+
+  ELogWriter = class(Exception)
+
   end;
 
 implementation

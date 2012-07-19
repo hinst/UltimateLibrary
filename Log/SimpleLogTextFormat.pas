@@ -24,7 +24,7 @@ type
     ObjectHere = 'OBJECT';
     TextHere = 'TEXT';
     LineEndingHere = '\n';
-    DefaultFormat = 'NUMBER TIME TAG\n  OBJECT: TEXT';
+    DefaultFormat = 'NUMBER # TIME [TAG]\nOBJECT: TEXT';
   private
     FFormatStr: string;
     FTimeToStr: TTimeToStr;

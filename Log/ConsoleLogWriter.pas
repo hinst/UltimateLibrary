@@ -7,7 +7,7 @@ interface
 
 uses
   Classes, SysUtils,
-  LogWriter, LogItem, JobThread, LogTextFormat;
+  LogWriter, LogItem, JobThread, LogTextFormat, ComponentEnhancer;
 
 type
 
@@ -18,8 +18,9 @@ type
     fFormat: ILogTextFormat;
     procedure SetFormat(const aFormat: ILogTextFormat);
     function GetName: string;
+    function GetMe: TObject;
   public
-    property Format: ILogTextFormat read fFormat write fFormat;
+    property Format: ILogTextFormat read fFormat write SetFormat;
     procedure Write(const aThread: TJobThread; const aItem: PLogItem);
   end;
 
@@ -34,7 +35,12 @@ end;
 
 function TConsoleLogWriter.GetName: string;
 begin
-  result := name;
+  result := GetClassAndName;
+end;
+
+function TConsoleLogWriter.GetMe: TObject;
+begin
+  result := self;
 end;
 
 procedure TConsoleLogWriter.Write(const aThread: TJobThread;
