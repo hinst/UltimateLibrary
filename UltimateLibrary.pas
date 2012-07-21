@@ -10,7 +10,7 @@ uses
   LogManager, LogWriter, LogItem, LogEntity, JobThread, FPListEnhancer, 
   LogObjectEnhancer, ThreadEnhancer, ConsoleLogWriter, LogTextFormat, 
   DefaultLogTextFormat, LogStandardConfig, SimpleLogTextFormat, LogFormat, 
-  TextFileLogWriter, ComponentEnhancer, ReversibleCorbaFace;
+  TextFileLogWriter, ComponentEnhancer, ReversibleCorbaFace, StackTracer;
 
 implementation
 

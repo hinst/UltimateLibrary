@@ -1,7 +1,7 @@
 unit LogEntity;
 
 {$mode objfpc}{$H+}
-{$INTERFACES COM}
+{$INTERFACES CORBA}
 
 interface
 
@@ -17,6 +17,7 @@ type
     procedure Write(const aText: string);
     procedure Write(const aTag: string; const aText: string);
     procedure Write(const aTag: TStandardLogTag; const aText: string);
+    procedure Free;
   end;
 
   { TLog }
@@ -56,6 +57,7 @@ procedure TLog.Write(const aTag: string; const aText: string);
 var
   pItem: PLogItem;
 begin
+  if not assigned(self) then exit;
   new(pItem, Init);
   pItem^.Tag := aTag;
   pItem^.ObjectName := Name;
@@ -67,6 +69,7 @@ procedure TLog.Write(const aTag: TStandardLogTag; const aText: string);
 var
   tagCaption: string;
 begin
+  if not assigned(self) then exit;
   tagCaption := manager.StandardLogTagToString.ToString(aTag);
   write(tagCaption, aText);
 end;

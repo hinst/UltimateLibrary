@@ -33,7 +33,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="17">
+    <Files Count="18">
       <Item1>
         <Filename Value="Log\LogManager.pas"/>
         <UnitName Value="LogManager"/>
@@ -84,7 +84,7 @@
       </Item12>
       <Item13>
         <Filename Value="Log\SimpleLogTextFormat.pas"/>
-        <UnitName Value="SimpleTextLogFormat"/>
+        <UnitName Value="SimpleLogTextFormat"/>
       </Item13>
       <Item14>
         <Filename Value="Log\LogFormat.pas"/>
@@ -102,6 +102,10 @@
         <Filename Value="Crap\ReversibleCorbaFace.pas"/>
         <UnitName Value="ReversibleCorbaFace"/>
       </Item17>
+      <Item18>
+        <Filename Value="StackTracer.pas"/>
+        <UnitName Value="StackTracer"/>
+      </Item18>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>
