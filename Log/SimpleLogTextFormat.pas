@@ -6,6 +6,7 @@ interface
 
 uses
   Classes, SysUtils,
+  StringFeatures,
   LogItem, LogFormat, LogTextFormat;
 
 type
@@ -25,10 +26,11 @@ type
     TextHere = 'TEXT';
     LineEndingHere = '\n';
     DefaultFormat = 'NUMBER # TIME [TAG]\nOBJECT: TEXT';
+    DefaultZeroLength = 6;
   private
     FFormatStr: string;
     FTimeToStr: TTimeToStr;
-    FLatestResult: string;
+    FZeroLength: integer;
   protected
     procedure Initialize;
     procedure Replace(var AText: string;
@@ -38,7 +40,7 @@ type
       read FTimeToStr write FTimeToStr;
     function DefaultTimeToStr: TTimeToStr;
     property FormatStr: string read FFormatStr write FFormatStr;
-    property LatestResult: string read FLatestResult;
+    property ZeroLength: integer read FZeroLength write FZeroLength;
     function Format(const aItem: PLogItem): string;
   end;
 
@@ -54,8 +56,9 @@ end;
 
 procedure TSimpleTextLogFormat.Initialize;
 begin
-  FFormatStr := DefaultFormat;
-  FTimeToStr := DefaultTimeToStr;
+  FormatStr := DefaultFormat;
+  TimeToStr := DefaultTimeToStr;
+  ZeroLength := DefaultZeroLength;
 end;
 
 procedure TSimpleTextLogFormat.Replace(var AText: string; const AOldPattern,
@@ -73,7 +76,7 @@ function TSimpleTextLogFormat.Format(const aItem: PLogItem): string;
 begin
   result := FormatStr;
   Replace(result, LineEndingHere, LineEnding);
-  Replace(result, NumberHere, IntToStr(aItem^.Number));
+  Replace(result, NumberHere, ZeroToStr(aItem^.Number, ZeroLength));
   if pos(TimeHere, result) > 0 then
   begin
     if TimeToStr = nil then

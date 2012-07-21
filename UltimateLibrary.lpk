@@ -33,7 +33,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="18">
+    <Files Count="19">
       <Item1>
         <Filename Value="Log\LogManager.pas"/>
         <UnitName Value="LogManager"/>
@@ -106,6 +106,10 @@
         <Filename Value="StackTracer.pas"/>
         <UnitName Value="StackTracer"/>
       </Item18>
+      <Item19>
+        <Filename Value="Crap\StringFeatures.pas"/>
+        <UnitName Value="StringFeatures"/>
+      </Item19>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>
