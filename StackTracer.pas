@@ -5,9 +5,17 @@ unit StackTracer;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes,
+  SysUtils;
+
+function GetFatalErrorInfo: string;
 
 implementation
+
+function GetFatalErrorInfo: string;
+begin
+
+end;
 
 end.
 

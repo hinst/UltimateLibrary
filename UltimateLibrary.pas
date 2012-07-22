@@ -11,7 +11,7 @@ uses
   LogObjectEnhancer, ThreadEnhancer, ConsoleLogWriter, LogTextFormat, 
   DefaultLogTextFormat, LogStandardConfig, SimpleLogTextFormat, LogFormat, 
   TextFileLogWriter, ComponentEnhancer, ReversibleCorbaFace, StackTracer, 
-  StringFeatures;
+  StringFeatures, NiceExceptions;
 
 implementation
 
