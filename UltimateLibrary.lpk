@@ -8,7 +8,7 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <OtherUnitFiles Value="Log;JobThread;Crap"/>
+        <OtherUnitFiles Value="Log;JobThread;Crap;Containers"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Parsing>
@@ -103,16 +103,16 @@
         <UnitName Value="ReversibleCorbaFace"/>
       </Item17>
       <Item18>
-        <Filename Value="StackTracer.pas"/>
-        <UnitName Value="StackTracer"/>
-      </Item18>
-      <Item19>
         <Filename Value="Crap\StringFeatures.pas"/>
         <UnitName Value="StringFeatures"/>
-      </Item19>
-      <Item20>
+      </Item18>
+      <Item19>
         <Filename Value="Crap\NiceExceptions.pas"/>
         <UnitName Value="NiceExceptions"/>
+      </Item19>
+      <Item20>
+        <Filename Value="Containers\Generic2DArray.pas"/>
+        <UnitName Value="Generic2DArray"/>
       </Item20>
     </Files>
     <RequiredPkgs Count="1">

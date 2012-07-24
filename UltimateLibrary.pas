@@ -10,8 +10,8 @@ uses
   LogManager, LogWriter, LogItem, LogEntity, JobThread, FPListEnhancer, 
   LogObjectEnhancer, ThreadEnhancer, ConsoleLogWriter, LogTextFormat, 
   DefaultLogTextFormat, LogStandardConfig, SimpleLogTextFormat, LogFormat, 
-  TextFileLogWriter, ComponentEnhancer, ReversibleCorbaFace, StackTracer, 
-  StringFeatures, NiceExceptions;
+  TextFileLogWriter, ComponentEnhancer, ReversibleCorbaFace, StringFeatures, 
+  NiceExceptions, Generic2DArray;
 
 implementation
 
