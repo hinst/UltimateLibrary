@@ -9,11 +9,14 @@ uses
 
 type
   EArgumentUnassigned = class(Exception);
+  EFileNotFound = class(Exception);
 
 function GetFullExceptionInfo(const aException: Exception): string;
 
 procedure AssertArgumentAssigned(const aObject: TObject; const aArgumentName: string); inline;
 procedure AssertArgumentAssigned(const aObject: boolean; const aArgumentName: string); inline;
+
+procedure AssertFileExists(const aFileName: string); inline;
 
 implementation
 
@@ -45,6 +48,12 @@ procedure AssertArgumentAssigned(const aObject: boolean;
 begin
   if not aObject then
     raise EArgumentUnassigned.Create(aArgumentName);
+end;
+
+procedure AssertFileExists(const aFileName: string);
+begin
+  if not FileExists(aFileName) then
+    raise EFileNotFound.Create(aFileName);
 end;
 
 end.
