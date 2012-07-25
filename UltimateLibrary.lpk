@@ -33,7 +33,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="20">
+    <Files Count="22">
       <Item1>
         <Filename Value="Log\LogManager.pas"/>
         <UnitName Value="LogManager"/>
@@ -114,6 +114,14 @@
         <Filename Value="Containers\Generic2DArray.pas"/>
         <UnitName Value="Generic2DArray"/>
       </Item20>
+      <Item21>
+        <Filename Value="Log\NoLogEntity.pas"/>
+        <UnitName Value="NoLogEntity"/>
+      </Item21>
+      <Item22>
+        <Filename Value="Log\LogEntityFace.pas"/>
+        <UnitName Value="LogEntityFace"/>
+      </Item22>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>

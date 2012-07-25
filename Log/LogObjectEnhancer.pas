@@ -5,7 +5,8 @@ unit LogObjectEnhancer;
 interface
 
 uses
-  Classes, SysUtils, LogItem, LogManager, LogEntity;
+  Classes, SysUtils,
+  LogItem, LogManager, LogEntity, LogEntityFace;
 
 type
 

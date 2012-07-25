@@ -7,18 +7,9 @@ interface
 
 uses
   Classes, SysUtils,
-  LogItem, LogManager;
+  LogItem, LogManager, LogEntityFace;
 
 type
-
-  { ILog }
-
-  ILog = interface
-    procedure Write(const aText: string);
-    procedure Write(const aTag: string; const aText: string);
-    procedure Write(const aTag: TStandardLogTag; const aText: string);
-    procedure Free;
-  end;
 
   { TLog }
 

@@ -5,7 +5,8 @@ unit LogItem;
 interface
 
 uses
-  Classes, SysUtils;
+  SysUtils,
+  LogEntityFace;
 
 type
 
@@ -31,15 +32,6 @@ type
   end;
 
   PLogItem = ^TLogItem;
-
-  TStandardLogTag =
-  (
-    logTagStartup,
-    logTagDebug,
-    logTagWarning,
-    logTagError,
-    logTagEnd
-  );
 
   IStandardLogTagToString = interface
     function ToString(const aTag: TStandardLogTag): string;
