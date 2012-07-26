@@ -8,11 +8,14 @@ uses
   Classes, SysUtils;
 
 type
-  EArgumentUnassigned = class(Exception);
+  EUnassigned = class(Exception);
+  EArgumentUnassigned = class(EUnassigned);
   EFileNotFound = class(Exception);
 
 function GetFullExceptionInfo(const aException: Exception): string;
 
+procedure AssertAssigned(const aObject: TObject; const aName: string); inline;
+procedure AssertAssigned(const aCondition: boolean; const aName: string); inline;
 procedure AssertArgumentAssigned(const aObject: TObject; const aArgumentName: string); inline;
 procedure AssertArgumentAssigned(const aObject: boolean; const aArgumentName: string); inline;
 
@@ -36,6 +39,18 @@ begin
   for FrameNumber := 0 to FrameCount - 1 do
     result += BackTraceStrFunc(Frames[FrameNumber]) + LineEnding;
   result += '(end of stack trace)';
+end;
+
+procedure AssertAssigned(const aObject: TObject; const aName: string);
+begin
+  AssertAssigned(Assigned(aObject), aName);
+end;
+
+procedure AssertAssigned(const aCondition: boolean; const aName: string
+  );
+begin
+  if not aCondition then
+    raise EUnassigned.Create(aName);
 end;
 
 procedure AssertArgumentAssigned(const aObject: TObject; const aArgumentName: string);

@@ -15,7 +15,7 @@ type
   public
     constructor Create(const aWidth, aHeight: integer);
     constructor Create;
-  private type
+  public type
     TColumn = array of T;
     TMatrix = array of TColumn;
   private
