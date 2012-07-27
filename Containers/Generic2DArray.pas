@@ -5,7 +5,9 @@ unit Generic2DArray;
 interface
 
 uses
-  Classes, SysUtils;
+  Classes,
+  SysUtils,
+  NiceExceptions;
 
 type
 
@@ -60,6 +62,8 @@ procedure T2Array.Deallocate;
 var
   x: integer;
 begin
+  if not Assigned(fMatrix) then
+    exit; // nothing to deallocate
   for x := 0 to Width - 1 do
     SetLength(fMatrix[x], 0);
   SetLength(fMatrix, 0);
