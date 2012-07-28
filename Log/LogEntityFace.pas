@@ -25,7 +25,16 @@ type
     procedure Free;
   end;
 
+procedure FreeLog(var aLog: ILog);
+
 implementation
+
+procedure FreeLog(var aLog: ILog);
+begin
+  if Assigned(aLog) then
+    aLog.Free;
+  aLog := nil;
+end;
 
 end.
 
