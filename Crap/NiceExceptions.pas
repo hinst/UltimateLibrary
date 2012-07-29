@@ -11,6 +11,7 @@ type
   EUnassigned = class(Exception);
   EArgumentUnassigned = class(EUnassigned);
   EFileNotFound = class(Exception);
+  EIndexOutOfBounds = class(Exception);
 
 function GetFullExceptionInfo(const aException: Exception): string;
 
@@ -18,6 +19,7 @@ procedure AssertAssigned(const aObject: TObject; const aName: string); inline;
 procedure AssertAssigned(const aCondition: boolean; const aName: string); inline;
 procedure AssertArgumentAssigned(const aObject: TObject; const aArgumentName: string); inline;
 procedure AssertArgumentAssigned(const aObject: boolean; const aArgumentName: string); inline;
+function AssertIndexInBounds(const aMin, aIndex, aMax: integer; const aMessage: string): boolean; inline;
 
 procedure AssertFileExists(const aFileName: string); inline;
 
@@ -63,6 +65,14 @@ procedure AssertArgumentAssigned(const aObject: boolean;
 begin
   if not aObject then
     raise EArgumentUnassigned.Create(aArgumentName);
+end;
+
+function AssertIndexInBounds(const aMin, aIndex, aMax: integer;
+  const aMessage: string): boolean;
+begin
+  result := (aMin <= aIndex) and (aIndex <= aMax);
+  if not result then
+    raise EIndexOutOfBounds.Create(aMessage + ' (index is ' + IntToStr(aIndex) + ')');
 end;
 
 procedure AssertFileExists(const aFileName: string);

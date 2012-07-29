@@ -10,6 +10,17 @@ uses
 function ZeroToStr(const aInteger: integer; const aLength: integer): string;
 function StrHexToLongWord(const aText: string): LongWord;
 
+type
+  TStringContainer = record
+    s: string;
+  end;
+
+var
+  easyString: TStringContainer = (s: '');
+
+operator + (const a: TStringContainer; const aString: string): TStringContainer;
+operator + (const a: TStringContainer; const aInteger: integer): TStringContainer;
+
 implementation
 
 function ZeroToStr(const aInteger: integer; const aLength: integer): string;
@@ -41,6 +52,7 @@ begin
     'E': r := 14;
     'F': r := 15;
   end;
+  result := r;
 end;
 
 function StrHexToLongWord(const aText: string): LongWord;
@@ -56,6 +68,16 @@ begin
     inc(result, HexToLongWord(aText[i]) * multiplier);
     multiplier := 16 * multiplier;
   end;
+end;
+
+operator + (const a: TStringContainer; const aString: string): TStringContainer;
+begin
+  result.s := a.s + aString;
+end;
+
+operator + (const a: TStringContainer; const aInteger: integer): TStringContainer;
+begin
+  result.s := a.s + IntToStr(aInteger);
 end;
 
 end.

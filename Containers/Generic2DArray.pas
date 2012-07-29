@@ -55,7 +55,7 @@ var
 begin
   SetLength(fMatrix, Width);
   for x := 0 to Width - 1 do
-    SetLength(Matrix[x], Height);
+    SetLength(fMatrix[x], Height);
 end;
 
 procedure T2Array.Deallocate;
