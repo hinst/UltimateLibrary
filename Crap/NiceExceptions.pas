@@ -15,8 +15,7 @@ type
 
 function GetFullExceptionInfo(const aException: Exception): string;
 
-procedure AssertAssigned(const aObject: TObject; const aName: string); inline;
-procedure AssertAssigned(const aCondition: boolean; const aName: string); inline;
+procedure AssertAssigned(const aPointer: pointer; const aName: string); inline;
 procedure AssertArgumentAssigned(const aObject: TObject; const aArgumentName: string); inline;
 procedure AssertArgumentAssigned(const aObject: boolean; const aArgumentName: string); inline;
 function AssertIndexInBounds(const aMin, aIndex, aMax: integer; const aMessage: string): boolean; inline;
@@ -43,15 +42,9 @@ begin
   result += '(end of stack trace)';
 end;
 
-procedure AssertAssigned(const aObject: TObject; const aName: string);
+procedure AssertAssigned(const aPointer: pointer; const aName: string);
 begin
-  AssertAssigned(Assigned(aObject), aName);
-end;
-
-procedure AssertAssigned(const aCondition: boolean; const aName: string
-  );
-begin
-  if not aCondition then
+  if aPointer = nil then
     raise EUnassigned.Create(aName);
 end;
 

@@ -6,7 +6,7 @@ unit LogEntity;
 interface
 
 uses
-  Classes, SysUtils,
+  Classes, SysUtils, SyncObjs,
   LogItem, LogManager, LogEntityFace;
 
 type
@@ -19,6 +19,7 @@ type
   private
     fManager: TLogManager;
     fName: string;
+    fLock: TCriticalSection;
   public
     property Manager: TLogManager read fManager;
     property Name: string read fName;
@@ -37,6 +38,7 @@ begin
   inherited Create;
   fManager := aManager;
   fName := aName;
+  fLock := TCriticalSection.Create;
 end;
 
 procedure TLog.Write(const aText: string);
@@ -48,12 +50,14 @@ procedure TLog.Write(const aTag: string; const aText: string);
 var
   pItem: PLogItem;
 begin
+  fLock.Enter;
   if not assigned(self) then exit;
   new(pItem, Init);
   pItem^.Tag := aTag;
   pItem^.ObjectName := Name;
   pItem^.Text := aText;
   Manager.Write(pItem);
+  fLock.Leave;
 end;
 
 procedure TLog.Write(const aTag: TStandardLogTag; const aText: string);
@@ -67,6 +71,7 @@ end;
 
 destructor TLog.Destroy;
 begin
+  FreeAndNil(fLock);
   inherited Destroy;
 end;
 

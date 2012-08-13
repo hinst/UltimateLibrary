@@ -33,7 +33,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="22">
+    <Files Count="24">
       <Item1>
         <Filename Value="Log\LogManager.pas"/>
         <UnitName Value="LogManager"/>
@@ -122,6 +122,14 @@
         <Filename Value="Log\LogEntityFace.pas"/>
         <UnitName Value="LogEntityFace"/>
       </Item22>
+      <Item23>
+        <Filename Value="JobThread\SynchroThread.pas"/>
+        <UnitName Value="SynchroThread"/>
+      </Item23>
+      <Item24>
+        <Filename Value="JobThread\BatchProcessing.pas"/>
+        <UnitName Value="BatchProcessing"/>
+      </Item24>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>

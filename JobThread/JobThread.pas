@@ -222,6 +222,7 @@ begin
     j := IThreadJob(p);
     j.Free;
   end;
+  ExecutedJobs.Clear;
 end;
 
 destructor TJobThread.Destroy;
