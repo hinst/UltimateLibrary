@@ -19,7 +19,6 @@ type
     procedure Write(const aText: string);
     procedure Write(const aTag: string; const aText: string);
     procedure Write(const aTag: TStandardLogTag; const aText: string);
-    procedure Free;
   end;
 
 implementation
@@ -35,10 +34,6 @@ begin
 end;
 
 procedure TNoLog.Write(const aTag: TStandardLogTag; const aText: string);
-begin
-end;
-
-procedure TNoLog.Free;
 begin
 end;
 

@@ -51,6 +51,7 @@ type
     fCurrentId: integer;
     function GetNextId: integer;
     procedure Initialize;
+    procedure Add(const aItem: TItem);
     procedure Finalize;
   public const
     TIMEOUT = 10 * 1000;
@@ -60,7 +61,7 @@ type
     property Batch: TBatchProcessing read fBatch;
     property NextId: integer read GetNextId;
     procedure EnableDebug(const aLog: ILog);
-    function Add(const aJob: ISynchroJob): TItem;
+    function CreateItem(const aJob: ISynchroJob): TItem;
     procedure Execute(const aJob: ISynchroJob);
     function ExecuteOne: boolean;
     destructor Destroy; override;
@@ -117,6 +118,16 @@ begin
   fEvent := TSimpleEvent.Create;
 end;
 
+procedure TSynchroThread.Add(const aItem: TItem);
+begin
+  if DEBUG then
+  begin
+    Log.Write('Now adding job: #' + IntToStr(aItem.Id));
+    AssertAssigned(Batch, 'Batch');
+  end;
+  Batch.Add(aItem);
+end;
+
 procedure TSynchroThread.TItem.Finalize;
 begin
   Job.Free;
@@ -164,41 +175,33 @@ begin
   fLog := aLog;
 end;
 
-function TSynchroThread.Add(const aJob: ISynchroJob): TItem;
-var
-  item: TItem;
+function TSynchroThread.CreateItem(const aJob: ISynchroJob): TItem;
 begin
-  item := TItem.Create(aJob);
-  item.fId := NextId;
-  if DEBUG then
-  begin
-    Log.Write('Now adding job: #' + IntToStr(item.Id));
-    AssertAssigned(Batch, 'Batch');
-  end;
-  Batch.Add(item);
-  result := item;
+  result := TItem.Create(aJob);
+  result.fId := NextId;
 end;
 
 procedure TSynchroThread.Execute(const aJob: ISynchroJob);
 var
   item: TItem;
 begin
+  item := CreateItem(aJob);
   if ThreadID = MainThreadID then
-  begin
+  begin // DIRECT EXECUTE
     if DEBUG then
       Log.Write('Now executing directly #' + IntToStr(item.Id));
-    aJob.Execute; // 0. Direct Execute
+    aJob.Execute;
   end
   else
-  begin
-    item := Add(aJob); // 1. ADD
+  begin // WAIT FOR EXECUTE
+    Add(item);
     if DEBUG then
       Log.Write('Now waiting... #' + IntToStr(item.Id));
-    item.Event.WaitFor(TIMEOUT); // 2. WAIT
+    item.Event.WaitFor(TIMEOUT);
     if DEBUG then
       Log.Write('Closed #' + IntToStr(item.Id));
   end;
-  Batch.MarkExecuted(item); // 3. REMOVE
+  Batch.MarkExecuted(item);
   if DEBUG then
     Log.Write('Added to executed list #' + IntToStr(item.Id));
 end;
