@@ -99,8 +99,8 @@
         <UnitName Value="ComponentEnhancer"/>
       </Item16>
       <Item17>
-        <Filename Value="Crap\ReversibleCorbaFace.pas"/>
-        <UnitName Value="ReversibleCorbaFace"/>
+        <Filename Value="Crap\NiceInterfaces.pas"/>
+        <UnitName Value="NiceInterfaces"/>
       </Item17>
       <Item18>
         <Filename Value="Crap\StringFeatures.pas"/>

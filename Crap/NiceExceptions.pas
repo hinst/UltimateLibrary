@@ -16,9 +16,9 @@ type
 function GetFullExceptionInfo(const aException: Exception): string;
 
 procedure AssertAssigned(const aPointer: pointer; const aName: string); inline;
-procedure AssertArgumentAssigned(const aObject: TObject; const aArgumentName: string); inline;
-procedure AssertArgumentAssigned(const aObject: boolean; const aArgumentName: string); inline;
-function AssertIndexInBounds(const aMin, aIndex, aMax: integer; const aMessage: string): boolean; inline;
+procedure AssertArgumentAssigned(const aCondition: boolean; const aArgumentName: string);
+procedure AssertArgumentAssigned(const aPointer: pointer; const aArgumentName: string);
+function AssertIndexInBounds(const aMin, aIndex, aMax: integer; const aMessage: string): boolean;
 
 procedure AssertFileExists(const aFileName: string); inline;
 
@@ -48,16 +48,15 @@ begin
     raise EUnassigned.Create(aName);
 end;
 
-procedure AssertArgumentAssigned(const aObject: TObject; const aArgumentName: string);
+procedure AssertArgumentAssigned(const aCondition: boolean; const aArgumentName: string);
 begin
-  AssertArgumentAssigned(Assigned(aObject), aArgumentName);
+  if not aCondition then
+    raise EArgumentUnassigned.Create(aArgumentName);
 end;
 
-procedure AssertArgumentAssigned(const aObject: boolean;
-  const aArgumentName: string);
+procedure AssertArgumentAssigned(const aPointer: pointer; const aArgumentName: string);
 begin
-  if not aObject then
-    raise EArgumentUnassigned.Create(aArgumentName);
+  AssertArgumentAssigned(Assigned(aPointer), aArgumentName);
 end;
 
 function AssertIndexInBounds(const aMin, aIndex, aMax: integer;

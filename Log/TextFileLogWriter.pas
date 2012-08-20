@@ -23,7 +23,7 @@ type
     function GetName: string;
     function GetFileName: string;
     procedure SetFormat(const aFormat: ILogTextFormat);
-    function GetMe: TObject;
+    function Reverse: TObject;
     procedure Finalize;
   public
     property Stream: TFileStream read fStream;
@@ -81,7 +81,7 @@ begin
   fFormat := aFormat;
 end;
 
-function TTextFileLogWriter.GetMe: TObject;
+function TTextFileLogWriter.Reverse: TObject;
 begin
   result := self;
 end;

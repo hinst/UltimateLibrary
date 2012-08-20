@@ -7,10 +7,10 @@ interface
 
 uses
   Classes, SysUtils,
-  ReversibleCorbaFace, JobThread, LogItem;
+  NiceInterfaces, JobThread, LogItem;
 
 type
-  ILogWriter = interface(IReversibleCorba)
+  ILogWriter = interface(IReversible)
     procedure Write(const aThread: TJobThread; const aItem: PLogItem);
     function GetName: string;
     property Name: string read GetName;

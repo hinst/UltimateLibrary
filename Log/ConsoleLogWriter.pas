@@ -18,7 +18,7 @@ type
     fFormat: ILogTextFormat;
     procedure SetFormat(const aFormat: ILogTextFormat);
     function GetName: string;
-    function GetMe: TObject;
+    function Reverse: TObject;
   public
     property Format: ILogTextFormat read fFormat write SetFormat;
     procedure Write(const aThread: TJobThread; const aItem: PLogItem);
@@ -38,7 +38,7 @@ begin
   result := GetClassAndName;
 end;
 
-function TConsoleLogWriter.GetMe: TObject;
+function TConsoleLogWriter.Reverse: TObject;
 begin
   result := self;
 end;
