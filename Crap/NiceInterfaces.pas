@@ -9,7 +9,12 @@ uses
   Classes, SysUtils;
 
 type
-  IReversible = interface
+
+  IReleasable = interface
+    procedure Free;
+  end;
+
+  IReversible = interface(IReleasable)
     function Reverse: TObject;
   end;
 

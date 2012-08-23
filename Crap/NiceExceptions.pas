@@ -12,8 +12,10 @@ type
   EArgumentUnassigned = class(EUnassigned);
   EFileNotFound = class(Exception);
   EIndexOutOfBounds = class(Exception);
+  EStackTrace = class(Exception);
 
 function GetFullExceptionInfo(const aException: Exception): string;
+function GetStackTraceText: string;
 
 procedure AssertAssigned(const aPointer: pointer; const aName: string); inline;
 procedure AssertArgumentAssigned(const aCondition: boolean; const aArgumentName: string);
@@ -31,7 +33,7 @@ var
 begin
   result := '';
   result += 'Exception class: ' + aException.ClassName + LineEnding;
-  result += 'Exception message: ' + aException.Message + LineEnding;
+  result += 'Exception message: "' + aException.Message + '"' + LineEnding;
   if RaiseList = nil then
     exit;
   result += BackTraceStrFunc(RaiseList^.Addr) + LineEnding;
@@ -40,6 +42,17 @@ begin
   for FrameNumber := 0 to FrameCount - 1 do
     result += BackTraceStrFunc(Frames[FrameNumber]) + LineEnding;
   result += '(end of stack trace)';
+end;
+
+function GetStackTraceText: string;
+begin
+  result := '';
+  try
+    raise EStackTrace.Create('Stack Trace');
+  except
+    on e: Exception do
+      result := GetFullExceptionInfo(e);
+  end;
 end;
 
 procedure AssertAssigned(const aPointer: pointer; const aName: string);

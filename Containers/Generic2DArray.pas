@@ -20,16 +20,20 @@ type
   public type
     TColumn = array of T;
     TMatrix = array of TColumn;
+    PT = ^T;
   private
     fMatrix: TMatrix;
     fWidth, fHeight: integer;
     procedure Allocate;
+    function GetCellExists(const aX, aY: integer): boolean;
     procedure Deallocate;
   public
     property Width: integer read fWidth;
     property Height: integer read fHeight;
     property Matrix: TMatrix read fMatrix;
     procedure Reallocate(const aWidth, aHeight: integer);
+    property CellExists[const x, y: integer]: boolean read GetCellExists;
+    function AccessCell(const x, y: integer): PT;
   end;
 
 implementation
@@ -58,6 +62,11 @@ begin
     SetLength(fMatrix[x], Height);
 end;
 
+function T2Array.GetCellExists(const aX, aY: integer): boolean;
+begin
+  result := (aX >= 0) and (aY >= 0) and (aX < Width) and (aY < Height);
+end;
+
 procedure T2Array.Deallocate;
 var
   x: integer;
@@ -77,6 +86,13 @@ begin
   fWidth := aWidth;
   fHeight := aHeight;
   Allocate;
+end;
+
+function T2Array.AccessCell(const x, y: integer): PT;
+begin
+  result := nil;
+  if CellExists[x, y] then
+    result := @( Matrix[x, y] );
 end;
 
 end.
