@@ -12,7 +12,7 @@ uses
   DefaultLogTextFormat, LogStandardConfig, SimpleLogTextFormat, LogFormat, 
   TextFileLogWriter, ComponentEnhancer, NiceInterfaces, StringFeatures, 
   NiceExceptions, Generic2DArray, NoLogEntity, LogEntityFace, SynchroThread, 
-  BatchProcessing;
+  BatchProcessing, Angle360;
 
 implementation
 

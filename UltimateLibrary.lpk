@@ -8,7 +8,7 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <OtherUnitFiles Value="Log;JobThread;Crap;Containers"/>
+        <OtherUnitFiles Value="Log;JobThread;Crap;Containers;Math"/>
         <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
       <Parsing>
@@ -33,7 +33,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="24">
+    <Files Count="25">
       <Item1>
         <Filename Value="Log\LogManager.pas"/>
         <UnitName Value="LogManager"/>
@@ -130,6 +130,10 @@
         <Filename Value="JobThread\BatchProcessing.pas"/>
         <UnitName Value="BatchProcessing"/>
       </Item24>
+      <Item25>
+        <Filename Value="Math\Angle360.pas"/>
+        <UnitName Value="Angle360"/>
+      </Item25>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>
