@@ -33,7 +33,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="26">
+    <Files Count="27">
       <Item1>
         <Filename Value="Log\LogManager.pas"/>
         <UnitName Value="LogManager"/>
@@ -138,6 +138,10 @@
         <Filename Value="Containers\Generic1DArray.pas"/>
         <UnitName Value="Generic1DArray"/>
       </Item26>
+      <Item27>
+        <Filename Value="Crap\NiceTypes.pas"/>
+        <UnitName Value="NiceTypes"/>
+      </Item27>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>
