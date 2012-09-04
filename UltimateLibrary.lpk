@@ -33,115 +33,71 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="27">
+    <Files Count="16">
       <Item1>
-        <Filename Value="Log\LogManager.pas"/>
-        <UnitName Value="LogManager"/>
-      </Item1>
-      <Item2>
-        <Filename Value="Log\LogWriter.pas"/>
-        <UnitName Value="LogWriter"/>
-      </Item2>
-      <Item3>
-        <Filename Value="Log\LogItem.pas"/>
-        <UnitName Value="LogItem"/>
-      </Item3>
-      <Item4>
-        <Filename Value="Log\LogEntity.pas"/>
-        <UnitName Value="LogEntity"/>
-      </Item4>
-      <Item5>
         <Filename Value="JobThread\JobThread.pas"/>
         <UnitName Value="JobThread"/>
-      </Item5>
-      <Item6>
+      </Item1>
+      <Item2>
         <Filename Value="Crap\FPListEnhancer.pas"/>
         <UnitName Value="FPListEnhancer"/>
-      </Item6>
-      <Item7>
-        <Filename Value="Log\LogObjectEnhancer.pas"/>
-        <UnitName Value="LogObjectEnhancer"/>
-      </Item7>
-      <Item8>
+      </Item2>
+      <Item3>
         <Filename Value="Crap\ThreadEnhancer.pas"/>
         <UnitName Value="ThreadEnhancer"/>
-      </Item8>
-      <Item9>
-        <Filename Value="Log\ConsoleLogWriter.pas"/>
-        <UnitName Value="ConsoleLogWriter"/>
-      </Item9>
-      <Item10>
-        <Filename Value="Log\LogTextFormat.pas"/>
-        <UnitName Value="LogTextFormat"/>
-      </Item10>
-      <Item11>
-        <Filename Value="Log\DefaultLogTextFormat.pas"/>
-        <UnitName Value="DefaultLogTextFormat"/>
-      </Item11>
-      <Item12>
-        <Filename Value="Log\LogStandardConfig.pas"/>
-        <UnitName Value="LogStandardConfig"/>
-      </Item12>
-      <Item13>
-        <Filename Value="Log\SimpleLogTextFormat.pas"/>
-        <UnitName Value="SimpleLogTextFormat"/>
-      </Item13>
-      <Item14>
-        <Filename Value="Log\LogFormat.pas"/>
-        <UnitName Value="LogFormat"/>
-      </Item14>
-      <Item15>
-        <Filename Value="Log\TextFileLogWriter.pas"/>
-        <UnitName Value="TextFileLogWriter"/>
-      </Item15>
-      <Item16>
+      </Item3>
+      <Item4>
         <Filename Value="Crap\ComponentEnhancer.pas"/>
         <UnitName Value="ComponentEnhancer"/>
-      </Item16>
-      <Item17>
+      </Item4>
+      <Item5>
         <Filename Value="Crap\NiceInterfaces.pas"/>
         <UnitName Value="NiceInterfaces"/>
-      </Item17>
-      <Item18>
+      </Item5>
+      <Item6>
         <Filename Value="Crap\StringFeatures.pas"/>
         <UnitName Value="StringFeatures"/>
-      </Item18>
-      <Item19>
+      </Item6>
+      <Item7>
         <Filename Value="Crap\NiceExceptions.pas"/>
         <UnitName Value="NiceExceptions"/>
-      </Item19>
-      <Item20>
+      </Item7>
+      <Item8>
         <Filename Value="Containers\Generic2DArray.pas"/>
         <UnitName Value="Generic2DArray"/>
-      </Item20>
-      <Item21>
-        <Filename Value="Log\NoLogEntity.pas"/>
-        <UnitName Value="NoLogEntity"/>
-      </Item21>
-      <Item22>
-        <Filename Value="Log\LogEntityFace.pas"/>
-        <UnitName Value="LogEntityFace"/>
-      </Item22>
-      <Item23>
+      </Item8>
+      <Item9>
         <Filename Value="JobThread\SynchroThread.pas"/>
         <UnitName Value="SynchroThread"/>
-      </Item23>
-      <Item24>
+      </Item9>
+      <Item10>
         <Filename Value="JobThread\BatchProcessing.pas"/>
         <UnitName Value="BatchProcessing"/>
-      </Item24>
-      <Item25>
+      </Item10>
+      <Item11>
         <Filename Value="Math\Angle360.pas"/>
         <UnitName Value="Angle360"/>
-      </Item25>
-      <Item26>
+      </Item11>
+      <Item12>
         <Filename Value="Containers\Generic1DArray.pas"/>
         <UnitName Value="Generic1DArray"/>
-      </Item26>
-      <Item27>
+      </Item12>
+      <Item13>
         <Filename Value="Crap\NiceTypes.pas"/>
         <UnitName Value="NiceTypes"/>
-      </Item27>
+      </Item13>
+      <Item14>
+        <Filename Value="Log\InternalLogFace.pas"/>
+        <UnitName Value="InternalLogFace"/>
+      </Item14>
+      <Item15>
+        <Filename Value="Crap\DebugInterfaces.pas"/>
+        <UnitName Value="DebugInterfaces"/>
+      </Item15>
+      <Item16>
+        <Filename Value="Crap\DebugUtilities.pas"/>
+        <UnitName Value="DebugUtilities"/>
+      </Item16>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>

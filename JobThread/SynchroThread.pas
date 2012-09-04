@@ -11,7 +11,6 @@ uses
   SyncObjs,
 
   BatchProcessing,
-  LogEntityFace,
   NiceExceptions;
 
 type
@@ -46,7 +45,6 @@ type
     end;
   private
     fDEBUG: boolean;
-    fLog: ILog;
     fBatch: TBatchProcessing;
     fCurrentId: integer;
     function GetNextId: integer;
@@ -56,11 +54,8 @@ type
   public const
     TIMEOUT = 10 * 1000;
   public
-    property DEBUG: boolean read fDEBUG write fDEBUG;
-    property Log: ILog read fLog write fLog;
     property Batch: TBatchProcessing read fBatch;
     property NextId: integer read GetNextId;
-    procedure EnableDebug(const aLog: ILog);
     function CreateItem(const aJob: ISynchroJob): TItem;
     procedure Execute(const aJob: ISynchroJob);
     function ExecuteOne: boolean;
@@ -120,11 +115,6 @@ end;
 
 procedure TSynchroThread.Add(const aItem: TItem);
 begin
-  if DEBUG then
-  begin
-    Log.Write('Now adding job: #' + IntToStr(aItem.Id));
-    AssertAssigned(Batch, 'Batch');
-  end;
   Batch.Add(aItem);
 end;
 
@@ -157,7 +147,6 @@ end;
 procedure TSynchroThread.Initialize;
 begin
   fDEBUG := false;
-  fLog := nil;
   fBatch := TBatchProcessing.Create;
   Batch.Releaser := @ReleaseItem;
   fCurrentId := 0;
@@ -166,13 +155,6 @@ end;
 procedure TSynchroThread.Finalize;
 begin
   FreeAndNil(fBatch);
-  FreeLog(fLog);
-end;
-
-procedure TSynchroThread.EnableDebug(const aLog: ILog);
-begin
-  fDEBUG := true;
-  fLog := aLog;
 end;
 
 function TSynchroThread.CreateItem(const aJob: ISynchroJob): TItem;
@@ -188,22 +170,14 @@ begin
   item := CreateItem(aJob);
   if ThreadID = MainThreadID then
   begin // DIRECT EXECUTE
-    if DEBUG then
-      Log.Write('Now executing directly #' + IntToStr(item.Id));
     aJob.Execute;
   end
   else
   begin // WAIT FOR EXECUTE
     Add(item);
-    if DEBUG then
-      Log.Write('Now waiting... #' + IntToStr(item.Id));
     item.Event.WaitFor(TIMEOUT);
-    if DEBUG then
-      Log.Write('Closed #' + IntToStr(item.Id));
   end;
   Batch.MarkExecuted(item);
-  if DEBUG then
-    Log.Write('Added to executed list #' + IntToStr(item.Id));
 end;
 
 function TSynchroThread.ExecuteOne: boolean;
@@ -213,20 +187,14 @@ begin
   item := TItem(Batch.Extract);
   result := item <> nil;
   if not result then exit;
-  if DEBUG then
-    Log.Write('Now executing #' + IntToStr(item.Id));
   try
     item.job.Execute;
   except
     on e: Exception do
     begin
-      if DEBUG then
-        Log.Write('An exception occured: ' + LineEnding + GetFullExceptionInfo(e));
       raise;
     end;
   end;
-  if DEBUG then
-    Log.Write('Now sending event #' + IntToStr(item.Id));
   item.Event.SetEvent;
 end;
 

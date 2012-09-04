@@ -7,12 +7,10 @@ unit UltimateLibrary;
 interface
 
 uses
-  LogManager, LogWriter, LogItem, LogEntity, JobThread, FPListEnhancer, 
-  LogObjectEnhancer, ThreadEnhancer, ConsoleLogWriter, LogTextFormat, 
-  DefaultLogTextFormat, LogStandardConfig, SimpleLogTextFormat, LogFormat, 
-  TextFileLogWriter, ComponentEnhancer, NiceInterfaces, StringFeatures, 
-  NiceExceptions, Generic2DArray, NoLogEntity, LogEntityFace, SynchroThread, 
-  BatchProcessing, Angle360, Generic1DArray, NiceTypes;
+  JobThread, FPListEnhancer, ThreadEnhancer, ComponentEnhancer, 
+  NiceInterfaces, StringFeatures, NiceExceptions, Generic2DArray, 
+  SynchroThread, BatchProcessing, Angle360, Generic1DArray, NiceTypes, 
+  InternalLogFace, DebugInterfaces, DebugUtilities;
 
 implementation
 

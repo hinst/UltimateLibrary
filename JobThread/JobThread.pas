@@ -167,6 +167,7 @@ begin
       ExecutedJobs.Add(job);
     end;
     Sleep(WaitInterval);
+    ReleaseExecutedJobs;
     if fTerminated and (JobCount = 0) then
       break;
   until false;

@@ -5,9 +5,14 @@ unit StringFeatures;
 interface
 
 uses
-  Classes, SysUtils, StrUtils;
+  Classes,
+  strings,
+  SysUtils,
+  StrUtils;
 
 function ZeroToStr(const aInteger: integer; const aLength: integer): string;
+function ConvertStringToPChar(const aString: string): PChar;
+function ConvertPCharToString(const aChar: PChar): string;
 function StrHexToLongWord(const aText: string): LongWord;
 
 type
@@ -53,6 +58,17 @@ begin
     'F': r := 15;
   end;
   result := r;
+end;
+
+function ConvertStringToPChar(const aString: string): PChar;
+begin
+  result := StrAlloc(Length(aString));
+  strpcopy(result, aString);
+end;
+
+function ConvertPCharToString(const aChar: PChar): string;
+begin
+  result := string(aChar);
 end;
 
 function StrHexToLongWord(const aText: string): LongWord;

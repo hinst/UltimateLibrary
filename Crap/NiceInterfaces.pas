@@ -1,12 +1,13 @@
 unit NiceInterfaces;
 
-{$mode objfpc}{$H+}
-{$interfaces CORBA}
+{$INTERFACES CORBA}
 
 interface
 
 uses
-  Classes, SysUtils;
+  SysUtils,
+
+  NiceExceptions;
 
 type
 
@@ -18,7 +19,10 @@ type
     function Reverse: TObject;
   end;
 
+
 implementation
+
+{ TDesinterfaced }
 
 end.
 
