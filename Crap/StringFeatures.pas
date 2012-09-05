@@ -13,6 +13,8 @@ function CopyToPChar(const aString: string): PChar;
 function CopyPCharToString(const aChar: PChar): string;
 function StrHexToLongWord(const aText: string): LongWord;
 
+function ifc(const aCondition: boolean; const aTrue, aFalse: string): string;
+
 type
   TStringContainer = record
     s: string;
@@ -82,6 +84,15 @@ begin
     inc(result, HexToLongWord(aText[i]) * multiplier);
     multiplier := 16 * multiplier;
   end;
+end;
+
+function ifc(const aCondition: boolean; const aTrue, aFalse: string): string;
+begin
+  result := '';
+  if aCondition then
+    result := aTrue
+  else
+    result := aFalse;
 end;
 
 operator + (const a: TStringContainer; const aString: string): TStringContainer;
