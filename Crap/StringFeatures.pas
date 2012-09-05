@@ -1,7 +1,5 @@
 unit StringFeatures;
 
-{$mode objfpc}{$H+}
-
 interface
 
 uses
@@ -10,9 +8,9 @@ uses
   SysUtils,
   StrUtils;
 
-function ZeroToStr(const aInteger: integer; const aLength: integer): string;
-function ConvertStringToPChar(const aString: string): PChar;
-function ConvertPCharToString(const aChar: PChar): string;
+function ZeroToStr(const aInteger: integer; const aLength: integer): string; inline;
+function CopyToPChar(const aString: string): PChar;
+function CopyPCharToString(const aChar: PChar): string;
 function StrHexToLongWord(const aText: string): LongWord;
 
 type
@@ -28,7 +26,7 @@ operator + (const a: TStringContainer; const aInteger: integer): TStringContaine
 
 implementation
 
-function ZeroToStr(const aInteger: integer; const aLength: integer): string;
+function ZeroToStr(const aInteger: integer; const aLength: integer): string; inline;
 begin
   result := IntToStr(aInteger);
   while Length(result) < aLength do
@@ -60,13 +58,13 @@ begin
   result := r;
 end;
 
-function ConvertStringToPChar(const aString: string): PChar;
+function CopyToPChar(const aString: string): PChar;
 begin
   result := StrAlloc(Length(aString));
-  strpcopy(result, aString);
+  result := StrPCopy(result, PChar(aString));
 end;
 
-function ConvertPCharToString(const aChar: PChar): string;
+function CopyPCharToString(const aChar: PChar): string;
 begin
   result := string(aChar);
 end;

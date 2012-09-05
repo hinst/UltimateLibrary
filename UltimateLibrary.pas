@@ -10,7 +10,7 @@ uses
   JobThread, FPListEnhancer, ThreadEnhancer, ComponentEnhancer, 
   NiceInterfaces, StringFeatures, NiceExceptions, Generic2DArray, 
   SynchroThread, BatchProcessing, Angle360, Generic1DArray, NiceTypes, 
-  InternalLogFace, DebugInterfaces, DebugUtilities;
+  InternalLogFace, DebugInterfaces, DebugUtilities, IndependentTime;
 
 implementation
 

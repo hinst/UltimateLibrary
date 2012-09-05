@@ -33,7 +33,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="16">
+    <Files Count="17">
       <Item1>
         <Filename Value="JobThread\JobThread.pas"/>
         <UnitName Value="JobThread"/>
@@ -98,6 +98,10 @@
         <Filename Value="Crap\DebugUtilities.pas"/>
         <UnitName Value="DebugUtilities"/>
       </Item16>
+      <Item17>
+        <Filename Value="Crap\IndependentTime.pas"/>
+        <UnitName Value="IndependentTime"/>
+      </Item17>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>

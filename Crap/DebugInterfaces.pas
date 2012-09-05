@@ -1,11 +1,15 @@
 unit DebugInterfaces;
 
 { $DEFINE DEBUG_INTERFACES}
+{$DEFINE DEBUG_INTERFACES_ADD_DE_REF}
+{ $DEFINE DEBUG_INTERFACES_ADD_DE_REF_STTCE}
 
 interface
 
 uses
-  SysUtils;
+  SysUtils,
+
+  NiceExceptions;
 
 type
 
@@ -19,7 +23,7 @@ type
 
   TInterfaced = class(TInterfacedObject, IUnknown, IReversibleCOM)
   public
-    function QueryInterface(constref iid : tguid;out obj) : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
+    function QueryInterface(constref iid : tguid; out obj) : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
     function _AddRef : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
     function _Release : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
     function Reverse: pointer; stdcall;
@@ -34,22 +38,28 @@ function TInterfaced.QueryInterface(constref iid: tguid; out obj): longint; stdc
 begin
   inherited QueryInterface(iid, obj);
   {$IFDEF DEBUG_INTERFACES}
-    WriteLN('ID: ' + ClassName + '.Query');
+  WriteLN('ID: ' + ClassName + '.Query');
   {$ENDIF}
 end;
 
 function TInterfaced._AddRef: longint; stdcall;
 begin
   result := inherited _AddRef;
-  {$IFDEF DEBUG_INTERFACES}
-    WriteLN('ID: ' + ClassName + '+REFER =' + IntToStr(RefCount));
+  {$IFDEF DEBUG_INTERFACES_ADD_DE_REF}
+  WriteLN('ID: ' + ClassName + '+REFER =' + IntToStr(RefCount));
+  {$IFDEF DEBUG_INTERFACES_ADD_DE_REF_STTCE}
+  WriteLN(GetStackTraceText);
+  {$ENDIF}
   {$ENDIF}
 end;
 
 function TInterfaced._Release: longint; stdcall;
 begin
-  {$IFDEF DEBUG_INTERFACES}
-    WriteLN('ID: ' + ClassName + '-DEREF =' + IntToStr(RefCount - 1));
+  {$IFDEF DEBUG_INTERFACES_ADD_DE_REF}
+  WriteLN('ID: ' + ClassName + '-DEREF =' + IntToStr(RefCount - 1));
+  {$IFDEF DEBUG_INTERFACES_ADD_DE_REF_STTCE}
+  WriteLN(GetStackTraceText);
+  {$ENDIF}
   {$ENDIF}
   result := inherited _Release;
 end;
