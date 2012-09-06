@@ -9,7 +9,7 @@ uses
 
   DebugInterfaces;
 
-function PointerToString(const aPointer: pointer): string;
+function PointerToText(const aPointer: pointer): string;
   {$IFDEF INLINE_THIS_UNIT} inline; {$ENDIF}
 
 function InterfaceActualObjectPointerToString(const aInterface: IUnknown): string;
@@ -20,7 +20,7 @@ function IAOPTS(const aFace: IUnknown): string;
 
 implementation
 
-function PointerToString(const aPointer: pointer): string;
+function PointerToText(const aPointer: pointer): string;
   {$IFDEF INLINE_THIS_UNIT} inline; {$ENDIF}
 begin
   result := '';
@@ -40,7 +40,7 @@ begin
   if aInterface = nil then
     exit('NIL');
   if aInterface is IReversibleCOM then
-    result := PointerToString((aInterface as IReversibleCOM).Reverse) + ' (DAO@SS)'
+    result := PointerToText((aInterface as IReversibleCOM).Reverse) + ' (DAO@SS)'
   else
     result := 'Not reversible';
 end;

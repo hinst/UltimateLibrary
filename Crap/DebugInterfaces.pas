@@ -1,16 +1,14 @@
 unit DebugInterfaces;
 
-{ $DEFINE DEBUG_INTERFACES_QUERY}
-{ $DEFINE DEBUG_INTERFACES_ADD_DE_REF}
-{ $DEFINE DEBUG_INTERFACES_ADD_DE_REF_STTCE}
-{ $DEFINE DEBUG_INTERFACES_TRACK_DESTRUCTION}
+{ $DEFINE WRITELN_INTERFACES_QUERY}
+{ $DEFINE WRITELN_INTERFACES_REFERENCE_COUNTING}
+{ $DEFINE WRITELN_INTERFACES_CONSTRUCTION}
+{ $DEFINE WRITELN_INTERFACES_DESTRUCTION}
 
 interface
 
 uses
   SysUtils,
-  gmap,
-  gutil,
 
   NiceExceptions;
 
@@ -40,31 +38,21 @@ type
 
 implementation
 
-type
-
-  { TInterfacedLess }
-
-  TInterfacedLess = class
-    class function C(a, b: TInterfaced): boolean; inline;
-  end;
-
-  TFaceTable = specialize TMap<TInterfaced, boolean, TInterfacedLess>;
-
-var
-  GlobalFaceTable: TFaceTable;
-
 { TInterfaced }
 
 constructor TInterfaced.Create;
 begin
   inherited Create;
+  {$IFDEF WRITELN_INTERFACES_CONSTRUCTION}
+  WriteLN('FACE: Constructing ' + ClassName + '....');
+  {$ENDIF}
 end;
 
 function TInterfaced.QueryInterface(constref iid: tguid; out obj): longint; stdcall;
 begin
   result := inherited QueryInterface(iid, obj);
 
-  {$IFDEF DEBUG_INTERFACES_QUERY}
+  {$IFDEF WRITELN_INTERFACES_QUERY}
   WriteLN('ID: ' + ClassName + '.Query');
   {$ENDIF}
 end;
@@ -73,21 +61,15 @@ function TInterfaced._AddRef: longint; stdcall;
 begin
   result := InterLockedIncrement(fRefCount);
 
-  {$IFDEF DEBUG_INTERFACES_ADD_DE_REF}
+  {$IFDEF WRITELN_INTERFACES_REFERENCE_COUNTING}
   WriteLN('ID: ' + ClassName + '+REFER =' + IntToStr(RefCount));
-  {$IFDEF DEBUG_INTERFACES_ADD_DE_REF_STTCE}
-  WriteLN(GetStackTraceText);
-  {$ENDIF}
   {$ENDIF}
 end;
 
 function TInterfaced._Release: longint; stdcall;
 begin
-  {$IFDEF DEBUG_INTERFACES_ADD_DE_REF}
+  {$IFDEF WRITELN_INTERFACES_REFERENCE_COUNTING}
   WriteLN('ID: ' + ClassName + '-DEREF =' + IntToStr(RefCount - 1));
-  {$IFDEF DEBUG_INTERFACES_ADD_DE_REF_STTCE}
-  WriteLN(GetStackTraceText);
-  {$ENDIF}
   {$ENDIF}
 
   result := InterLockedDecrement(fRefCount);
@@ -102,23 +84,11 @@ end;
 
 destructor TInterfaced.Destroy;
 begin
-  {$IFDEF DEBUG_INTERFACES_TRACK_DESTRUCTION}
-  WriteLN('ID: DY ' + ClassName);
+  {$IFDEF WRITELN_INTERFACES_DESTRUCTION}
+  WriteLN('FACE: Destructing ' + ClassName + '...');
   {$ENDIF}
   inherited Destroy;
 end;
 
-
-{ TInterfacedLess }
-
-class function TInterfacedLess.C(a, b: TInterfaced): boolean;
-begin
-  result := pointer(a) < pointer(b);
-end;
-
-initialization
-  GlobalFaceTable := TFaceTable.Create;
-finalization
-  GlobalFaceTable.Free;
 end.
 

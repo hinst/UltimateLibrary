@@ -103,13 +103,10 @@
         <UnitName Value="IndependentTime"/>
       </Item17>
     </Files>
-    <RequiredPkgs Count="2">
+    <RequiredPkgs Count="1">
       <Item1>
-        <PackageName Value="FCL_STL"/>
-      </Item1>
-      <Item2>
         <PackageName Value="FCL"/>
-      </Item2>
+      </Item1>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>
