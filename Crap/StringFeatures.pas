@@ -12,8 +12,7 @@ function ZeroToStr(const aInteger: integer; const aLength: integer): string; inl
 function CopyToPChar(const aString: string): PChar;
 function CopyPCharToString(const aChar: PChar): string;
 function StrHexToLongWord(const aText: string): LongWord;
-
-function ifc(const aCondition: boolean; const aTrue, aFalse: string): string;
+function PureStringReplace(const aText, aFrom, aTo: AnsiString): AnsiString; inline;
 
 type
   TStringContainer = record
@@ -62,7 +61,7 @@ end;
 
 function CopyToPChar(const aString: string): PChar;
 begin
-  result := StrAlloc(Length(aString));
+  result := PChar(GetMemory(Length(aString) + 1));
   result := StrPCopy(result, PChar(aString));
 end;
 
@@ -73,7 +72,8 @@ end;
 
 function StrHexToLongWord(const aText: string): LongWord;
 var
-  i, multiplier: integer;
+  i: integer;
+  multiplier: LongWord;
 begin
   result := 0;
   if Length(aText) <> 6 then
@@ -86,13 +86,21 @@ begin
   end;
 end;
 
-function ifc(const aCondition: boolean; const aTrue, aFalse: string): string;
+function SingleStringReplace(var aText: AnsiString; const aFrom, aTo: AnsiString): boolean;
+var
+  position: integer;
 begin
-  result := '';
-  if aCondition then
-    result := aTrue
-  else
-    result := aFalse;
+  position := Pos(aFrom, aText);
+  result := position > 0;
+  if not result then exit;
+  Delete(aText, position, Length(aFrom));
+  Insert(aTo, aText, position);
+end;
+
+function PureStringReplace(const aText, aFrom, aTo: AnsiString): AnsiString;
+begin
+  result := aText;
+  while SingleStringReplace(result, aFrom, aTo) do;
 end;
 
 operator + (const a: TStringContainer; const aString: string): TStringContainer;

@@ -1,22 +1,27 @@
 unit JobThread;
 
-{$mode objfpc}{$H+}
-{$INTERFACES CORBA}
+{$DEFINE WRITELN_JOBTHREAD_EXCEPTION}
+{ $DEFINE WRITELN_DEBUG_JOB_EXECUTION}
+{ $DEFINE WRITELN_DEBUG_JOB_ADDITION}
 
 interface
 
 uses
-  Classes, SysUtils,
+  Classes,
+  SysUtils,
   SyncObjs,
-  FPListEnhancer, ThreadEnhancer;
+  fgl,
+
+  NiceExceptions,
+  FPListEnhancer,
+  ThreadEnhancer;
 
 type
 
   TJobThread = class;
 
-  IThreadJob = interface
+  IThreadJob = interface ['{40F3AD56-1BD0-41AA-8DC3-0F496AFD3467}']
     procedure Execute(const aThread: TJobThread);
-    procedure Free;
   end;
 
   { TThreadJobIndirection }
@@ -55,19 +60,18 @@ type
   public
     constructor Create; reintroduce;
   private
-    fJobs: TFPList;
+    fJobs: TInterfaceList;
     fJobsCS: TCriticalSection;
-    fExecutedJobs: TFPList;
     fWaitInterval: integer;
     fTerminated: boolean;
   protected
-    property Jobs: TFPList read fJobs;
+    property Jobs: TInterfaceList read fJobs;
     property JobsCS: TCriticalSection read fJobsCS;
-    property ExecutedJobs: TFPList read fExecutedJobs;
     procedure Initialize;
     function ExtractFirst: IThreadJob;
     function GetJobCount: integer;
     procedure Execute; override;
+    procedure ExecuteFirst;
     procedure Execute(const aJob: IThreadJob);
     procedure OnException(const aException: Exception); virtual;
     procedure Finalize;
@@ -79,7 +83,6 @@ type
     function Sync(const aJob: IThreadJob): IThreadJob;
     procedure Add(const aJob: IThreadJob);
     procedure Terminate;
-    procedure ReleaseExecutedJobs;
     destructor Destroy; override;
   end;
 
@@ -133,9 +136,8 @@ end;
 
 procedure TJobThread.Initialize;
 begin
-  fJobs := TFPList.Create;
+  fJobs := TInterfaceList.Create;
   fJobsCS := TCriticalSection.Create;
-  fExecutedJobs := TFPList.Create;
   fWaitInterval := DefaultWaitInterval;
   fTerminated := false;
 end;
@@ -143,8 +145,8 @@ end;
 function TJobThread.ExtractFirst: IThreadJob;
 begin
   JobsCS.Enter;
-  result := IThreadJob(Jobs.First);
-  Jobs.DeleteFirst;
+  result := Jobs.First as IThreadJob;
+  Jobs.Delete(0);
   JobsCS.Leave;
 end;
 
@@ -156,44 +158,55 @@ begin
 end;
 
 procedure TJobThread.Execute;
-var
-  job: IThreadJob;
 begin
   repeat
     while JobCount > 0 do
-    begin
-      job := ExtractFirst;
-      Execute(job);
-      ExecutedJobs.Add(job);
-    end;
+      ExecuteFirst;
     Sleep(WaitInterval);
-    ReleaseExecutedJobs;
     if fTerminated and (JobCount = 0) then
       break;
   until false;
 end;
 
+procedure TJobThread.ExecuteFirst;
+var
+  job: IThreadJob;
+begin
+  job := ExtractFirst;
+  Execute(job);
+end;
+
 procedure TJobThread.Execute(const aJob: IThreadJob);
 begin
+  AssertArgumentAssigned(aJob, 'aJob');
+  {$IFDEF WRITELN_DEBUG_JOB_EXECUTION}
+  WriteLN('Now executing thread job...');
+  {$ENDIF}
   try
     aJob.Execute(self);
   except
     on e: Exception do
       OnException(e);
   end;
+  {$IFDEF WRITELN_DEBUG_JOB_EXECUTION}
+  WriteLN('Thread job executed.');
+  {$ENDIF}
 end;
 
 procedure TJobThread.OnException(const aException: Exception);
 begin
-  // nothing to do here
+  {$IFDEF WRITELN_JOBTHREAD_EXCEPTION}
+  WriteLN('Exception in job thread');
+  WriteLN(GetFullExceptionInfo(aException));
+  {$ENDIF}
+  if IsExceptionCritical(aException) then
+    raise aException;
 end;
 
 procedure TJobThread.Finalize;
 begin
   FreeAndNil(fJobs);
   FreeAndNil(fJobsCS);
-  ReleaseExecutedJobs;
-  FreeAndNil(fExecutedJobs);
 end;
 
 function TJobThread.Sync(const aJob: IThreadJob): IThreadJob;
@@ -203,7 +216,11 @@ end;
 
 procedure TJobThread.Add(const aJob: IThreadJob);
 begin
+  AssertArgumentAssigned(aJob, 'aJob');
   JobsCS.Enter;
+  {$IFDEF WRITELN_DEBUG_JOB_ADDITION}
+  WriteLN('Now adding job...');
+  {$ENDIF}
   Jobs.Add(aJob);
   JobsCS.Leave;
 end;
@@ -211,19 +228,6 @@ end;
 procedure TJobThread.Terminate;
 begin
   fTerminated := true;
-end;
-
-procedure TJobThread.ReleaseExecutedJobs;
-var
-  p: pointer;
-  j: IThreadJob;
-begin
-  for p in ExecutedJobs do
-  begin
-    j := IThreadJob(p);
-    j.Free;
-  end;
-  ExecutedJobs.Clear;
 end;
 
 destructor TJobThread.Destroy;

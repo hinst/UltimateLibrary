@@ -12,13 +12,15 @@ type
   { TAngle360 }
 
   TAngle360 = object
+  public
+    constructor Init;
   private
     fValue: single;
   public
     property Value: single read fValue write fValue;
     procedure Random;
     procedure Assign(const aX: single);
-    procedure AssignTo(var aX: single);
+    procedure AssignTo(out aX: single);
     procedure Inc(const aX: single);
     procedure Refresh;
     procedure MoveToDesiredAngle(
@@ -38,6 +40,7 @@ implementation
 
 operator := (const aX: single): TAngle360;
 begin
+  result.Init;
   result.Assign(aX);
 end;
 
@@ -76,6 +79,11 @@ end;
 
 { TAngle360 }
 
+constructor TAngle360.Init;
+begin
+  Value := 0;
+end;
+
 procedure TAngle360.Random;
 begin
   Value := System.Random(360);
@@ -86,7 +94,7 @@ begin
   Value := aX;
 end;
 
-procedure TAngle360.AssignTo(var aX: single);
+procedure TAngle360.AssignTo(out aX: single);
 begin
   aX := Value;
 end;

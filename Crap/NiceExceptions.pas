@@ -1,5 +1,8 @@
 unit NiceExceptions;
 
+{$DEFINE DEBUG_WRITELN_FAILED_ASSIGNED_ASSERTION}
+{$DEFINE DEBUG_WRITELN_FAILED_ARGUMENT_ASSIGNED_ASSERTION}
+
 interface
 
 uses
@@ -11,16 +14,19 @@ type
   EFileNotFound = class(Exception);
   EIndexOutOfBounds = class(Exception);
   EStackTrace = class(Exception);
+  ECritical = class(Exception);
 
 function GetFullExceptionInfo(const aException: Exception): string;
 function GetStackTraceText: string;
 
 procedure AssertAssigned(const aPointer: pointer; const aName: string); inline;
-procedure AssertArgumentAssigned(const aCondition: boolean; const aArgumentName: string);
-procedure AssertArgumentAssigned(const aPointer: pointer; const aArgumentName: string);
+procedure AssertArgumentAssigned(const aCondition: boolean; const aArgumentName: string); overload;
+procedure AssertArgumentAssigned(const aPointer: pointer; const aArgumentName: string); overload;
 function AssertIndexInBounds(const aMin, aIndex, aMax: integer; const aMessage: string): boolean;
 
 procedure AssertFileExists(const aFileName: string); inline;
+
+function IsExceptionCritical(const aException: Exception): boolean;
 
 implementation
 
@@ -30,15 +36,15 @@ var
   Frames: PPointer;
 begin
   result := '';
-  result += 'Exception class: ' + aException.ClassName + LineEnding;
-  result += 'Exception message: "' + aException.Message + '"' + LineEnding;
+  result := result + 'Exception class: ' + aException.ClassName + sLineBreak;
+  result := result + 'Exception message: "' + aException.Message + '"' + sLineBreak;
   if RaiseList = nil then
     exit;
-  result += BackTraceStrFunc(RaiseList^.Addr) + LineEnding;
+  result := result + BackTraceStrFunc(RaiseList^.Addr) + sLineBreak;
   FrameCount := RaiseList^.Framecount;
   Frames := RaiseList^.Frames;
   for FrameNumber := 0 to FrameCount - 1 do
-    result += BackTraceStrFunc(Frames[FrameNumber]) + LineEnding;
+    result := result + BackTraceStrFunc(Frames[FrameNumber]) + LineEnding;
   result += '(end of stack trace)';
 end;
 
@@ -56,13 +62,23 @@ end;
 procedure AssertAssigned(const aPointer: pointer; const aName: string);
 begin
   if aPointer = nil then
+  begin
+    {$IFDEF DEBUG_WRITELN_FAILED_ASSIGNED_ASSERTION}
+    WriteLN('Assertion failed: "' + aName + '" + unassigned');
+    {$ENDIF}
     raise EUnassigned.Create(aName);
+  end;
 end;
 
 procedure AssertArgumentAssigned(const aCondition: boolean; const aArgumentName: string);
 begin
   if not aCondition then
+  begin
+    {$IFDEF DEBUG_WRITELN_FAILED_ARGUMENT_ASSIGNED_ASSERTION}
+    WriteLN('Assertion failed: "' + aArgumentName + '" argument unassigned');
+    {$ENDIF}
     raise EArgumentUnassigned.Create(aArgumentName);
+  end;
 end;
 
 procedure AssertArgumentAssigned(const aPointer: pointer; const aArgumentName: string);
@@ -82,6 +98,14 @@ procedure AssertFileExists(const aFileName: string);
 begin
   if not FileExists(aFileName) then
     raise EFileNotFound.Create(aFileName);
+end;
+
+function IsExceptionCritical(const aException: Exception): boolean;
+begin
+  result :=
+    aException is EOutOfMemory or
+    aException is EOutOfResources or
+    aException is EStackOverflow;
 end;
 
 end.
