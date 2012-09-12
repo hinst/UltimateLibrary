@@ -2,8 +2,9 @@ unit DebugInterfaces;
 
 { $DEFINE WRITELN_INTERFACES_QUERY}
 { $DEFINE WRITELN_INTERFACES_REFERENCE_COUNTING}
-{ $DEFINE WRITELN_INTERFACES_CONSTRUCTION}
-{ $DEFINE WRITELN_INTERFACES_DESTRUCTION}
+{ $DEFINE DEBUG_WRITELN_INTERFACES_REFERENCE_COUNTING_STACKTRACE}
+{$DEFINE WRITELN_INTERFACES_CONSTRUCTION}
+{$DEFINE WRITELN_INTERFACES_DESTRUCTION}
 
 interface
 
@@ -20,19 +21,20 @@ type
     function Reverse: pointer; stdcall;
   end;
 
-  IReleasableCOM = interface(IUnknown) ['{E197C30B-BD04-4B91-A48D-429621EB125A}']
-    procedure Release; stdcall;
+  IHackableCOM = interface(IReversibleCOM) ['{F0E79C83-4183-474B-ADB7-0D8588BE4980}']
+    procedure ClearReferenceCounter; stdcall;
   end;
 
   { TInterfaced }
 
-  TInterfaced = class(TInterfacedObject, IUnknown, IReversibleCOM)
+  TInterfaced = class(TInterfacedObject, IUnknown, IHackableCOM)
   public
     constructor Create; virtual;
     function QueryInterface(constref iid : tguid; out obj) : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
     function _AddRef : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
     function _Release : longint;{$IFNDEF WINDOWS}cdecl{$ELSE}stdcall{$ENDIF};
     function Reverse: pointer; stdcall;
+    procedure ClearReferenceCounter; stdcall;
     destructor Destroy; override;
   end;
 
@@ -63,6 +65,9 @@ begin
 
   {$IFDEF WRITELN_INTERFACES_REFERENCE_COUNTING}
   WriteLN('ID: ' + ClassName + '+REFER =' + IntToStr(RefCount));
+  {$IFDEF DEBUG_WRITELN_INTERFACES_REFERENCE_COUNTING_STACKTRACE}
+  WriteLN(GetStackTraceText);
+  {$ENDIF}
   {$ENDIF}
 end;
 
@@ -70,6 +75,9 @@ function TInterfaced._Release: longint; stdcall;
 begin
   {$IFDEF WRITELN_INTERFACES_REFERENCE_COUNTING}
   WriteLN('ID: ' + ClassName + '-DEREF =' + IntToStr(RefCount - 1));
+  {$IFDEF DEBUG_WRITELN_INTERFACES_REFERENCE_COUNTING_STACKTRACE}
+  WriteLN(GetStackTraceText);
+  {$ENDIF}
   {$ENDIF}
 
   result := InterLockedDecrement(fRefCount);
@@ -80,6 +88,11 @@ end;
 function TInterfaced.Reverse: pointer; stdcall;
 begin
   result := self;
+end;
+
+procedure TInterfaced.ClearReferenceCounter; stdcall;
+begin
+  fRefCount := 0;
 end;
 
 destructor TInterfaced.Destroy;
