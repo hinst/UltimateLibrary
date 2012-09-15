@@ -10,7 +10,10 @@ uses
   JobThread, FPListEnhancer, ThreadEnhancer, ComponentEnhancer, 
   NiceInterfaces, StringFeatures, NiceExceptions, Generic2DArray, 
   SynchroThread, BatchProcessing, Angle360, Generic1DArray, NiceTypes, 
-  InternalLogFace, DebugInterfaces, DebugUtilities, IndependentTime;
+  DebugInterfaces, DebugUtilities, IndependentTime, ConsoleLogWriter, 
+  DefaultLogTextFormat, LogEntity, LogEntityFace, LogFormat, LogItem, 
+  LogManager, LogObjectEnhancer, LogStandardConfig, LogTextFormat, LogWriter, 
+  NoLogEntity, SimpleLogTextFormat, TextFileLogWriter;
 
 implementation
 

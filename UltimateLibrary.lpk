@@ -33,7 +33,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="17">
+    <Files Count="30">
       <Item1>
         <Filename Value="JobThread\JobThread.pas"/>
         <UnitName Value="JobThread"/>
@@ -87,21 +87,73 @@
         <UnitName Value="NiceTypes"/>
       </Item13>
       <Item14>
-        <Filename Value="Log\InternalLogFace.pas"/>
-        <UnitName Value="InternalLogFace"/>
-      </Item14>
-      <Item15>
         <Filename Value="Crap\DebugInterfaces.pas"/>
         <UnitName Value="DebugInterfaces"/>
-      </Item15>
-      <Item16>
+      </Item14>
+      <Item15>
         <Filename Value="Crap\DebugUtilities.pas"/>
         <UnitName Value="DebugUtilities"/>
-      </Item16>
-      <Item17>
+      </Item15>
+      <Item16>
         <Filename Value="Crap\IndependentTime.pas"/>
         <UnitName Value="IndependentTime"/>
+      </Item16>
+      <Item17>
+        <Filename Value="Log\ConsoleLogWriter.pas"/>
+        <UnitName Value="ConsoleLogWriter"/>
       </Item17>
+      <Item18>
+        <Filename Value="Log\DefaultLogTextFormat.pas"/>
+        <UnitName Value="DefaultLogTextFormat"/>
+      </Item18>
+      <Item19>
+        <Filename Value="Log\LogEntity.pas"/>
+        <UnitName Value="LogEntity"/>
+      </Item19>
+      <Item20>
+        <Filename Value="Log\LogEntityFace.pas"/>
+        <UnitName Value="LogEntityFace"/>
+      </Item20>
+      <Item21>
+        <Filename Value="Log\LogFormat.pas"/>
+        <UnitName Value="LogFormat"/>
+      </Item21>
+      <Item22>
+        <Filename Value="Log\LogItem.pas"/>
+        <UnitName Value="LogItem"/>
+      </Item22>
+      <Item23>
+        <Filename Value="Log\LogManager.pas"/>
+        <UnitName Value="LogManager"/>
+      </Item23>
+      <Item24>
+        <Filename Value="Log\LogObjectEnhancer.pas"/>
+        <UnitName Value="LogObjectEnhancer"/>
+      </Item24>
+      <Item25>
+        <Filename Value="Log\LogStandardConfig.pas"/>
+        <UnitName Value="LogStandardConfig"/>
+      </Item25>
+      <Item26>
+        <Filename Value="Log\LogTextFormat.pas"/>
+        <UnitName Value="LogTextFormat"/>
+      </Item26>
+      <Item27>
+        <Filename Value="Log\LogWriter.pas"/>
+        <UnitName Value="LogWriter"/>
+      </Item27>
+      <Item28>
+        <Filename Value="Log\NoLogEntity.pas"/>
+        <UnitName Value="NoLogEntity"/>
+      </Item28>
+      <Item29>
+        <Filename Value="Log\SimpleLogTextFormat.pas"/>
+        <UnitName Value="SimpleLogTextFormat"/>
+      </Item29>
+      <Item30>
+        <Filename Value="Log\TextFileLogWriter.pas"/>
+        <UnitName Value="TextFileLogWriter"/>
+      </Item30>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>
