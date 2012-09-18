@@ -6,29 +6,84 @@ unit NiceExceptions;
 interface
 
 uses
-  Classes, SysUtils;
+  SysUtils,
+  Classes,
+  StrUtils,
+
+  NiceTypes;
 
 type
-  EUnassigned = class(Exception);
-  EArgumentUnassigned = class(EUnassigned);
+
+  EUnassigned = class(Exception)
+  public
+    constructor Create(const aVariableName: string;
+      const aVariableType: TVariableType = TVariableType.Unknown);
+  private
+    fVariableName: string;
+    fVariableType: TVariableType;
+  public
+    property VariableName: string read fVariableName;
+    property VariableType: TVariableType read fVariableType;
+  end;
+
   EFileNotFound = class(Exception);
   EIndexOutOfBounds = class(Exception);
   EStackTrace = class(Exception);
   ECritical = class(Exception);
 
+  EAccessViolationAddress = class helper for EAccessViolation
+  public
+    function GetAddressAsText: string;
+  end;
+
 function GetFullExceptionInfo(const aException: Exception): string;
+
 function GetStackTraceText: string;
 
-procedure AssertAssigned(const aPointer: pointer; const aName: string); inline;
-procedure AssertArgumentAssigned(const aCondition: boolean; const aArgumentName: string); overload;
-procedure AssertArgumentAssigned(const aPointer: pointer; const aArgumentName: string); overload;
-function AssertIndexInBounds(const aMin, aIndex, aMax: integer; const aMessage: string): boolean;
+procedure AssertAssigned(const aPointer: pointer; const aVariableName: string;
+  const aVariableType: TVariableType); inline;
+
+type
+  TOneMoreAssignedAssertion = object
+  public
+    VariableType: TVariableType;
+    function Assigned(const aPointer: pointer; const aVariableName: string)
+      : TOneMoreAssignedAssertion; inline;
+  end;
+
+function AssertsAssigned(const aPointer: pointer; const aVariableName: string;
+  const aVariableType: TVariableType): TOneMoreAssignedAssertion;
+
+procedure AssertAssigned(const aCondition: boolean; const aVariableName: string;
+  const aVariableType: TVariableType); inline;
+
+procedure AssertIndexInBounds(const aMin, aIndex, aMax: integer; const aMessage: string); inline;
 
 procedure AssertFileExists(const aFileName: string); inline;
 
-function IsExceptionCritical(const aException: Exception): boolean;
+function IsExceptionCritical(const aException: Exception): boolean; inline;
 
 implementation
+
+constructor EUnassigned.Create(const aVariableName: string;
+  const aVariableType: TVariableType);
+begin
+  inherited Create('');
+  fVariableName := aVariableName;
+  fVariableType := aVariableType;
+  Message := VariableName + ' (' + VariableType + ') unassigned.';
+end;
+
+function EAccessViolationAddress.GetAddressAsText: string;
+var
+  digits: integer;
+begin
+  digits := SizeOf(pointer) * 2;
+  if Assigned(ExceptionRecord) then
+    result := '$' + IntToHex(PtrInt(ExceptionRecord^.ExceptionAddress), digits)
+  else
+    result := '$' + DupeString('?', digits);
+end;
 
 function GetFullExceptionInfo(const aException: Exception): string;
 var
@@ -38,6 +93,9 @@ begin
   result := '';
   result := result + 'Exception class: ' + aException.ClassName + sLineBreak;
   result := result + 'Exception message: "' + aException.Message + '"' + sLineBreak;
+  if aException is EAccessViolation then
+    result := result + 'Access violation address: '
+      + (aException as EAccessViolation).GetAddressAsText + sLineBreak;
   if RaiseList = nil then
     exit;
   result := result + BackTraceStrFunc(RaiseList^.Addr) + sLineBreak;
@@ -59,35 +117,36 @@ begin
   end;
 end;
 
-procedure AssertAssigned(const aPointer: pointer; const aName: string);
+procedure AssertAssigned(const aPointer: pointer; const aVariableName: string;
+  const aVariableType: TVariableType);
 begin
-  if aPointer = nil then
-  begin
-    {$IFDEF DEBUG_WRITELN_FAILED_ASSIGNED_ASSERTION}
-    WriteLN('Assertion failed: "' + aName + '" + unassigned');
-    {$ENDIF}
-    raise EUnassigned.Create(aName);
-  end;
+  AssertAssigned(Assigned(aPointer), aVariableName, aVariableType);
 end;
 
-procedure AssertArgumentAssigned(const aCondition: boolean; const aArgumentName: string);
+function TOneMoreAssignedAssertion.Assigned(const aPointer: pointer; const aVariableName: string)
+  : TOneMoreAssignedAssertion; inline;
+begin
+  AssertAssigned(aPointer, aVariableName, VariableType);
+end;
+
+function AssertsAssigned(const aPointer: pointer; const aVariableName: string;
+  const aVariableType: TVariableType): TOneMoreAssignedAssertion;
+begin
+  result.VariableType := aVariableType;
+  result.Assigned(aPointer, aVariableName);
+end;
+
+procedure AssertAssigned(const aCondition: boolean; const aVariableName: string;
+  const aVariableType: TVariableType);
 begin
   if not aCondition then
-  begin
-    {$IFDEF DEBUG_WRITELN_FAILED_ARGUMENT_ASSIGNED_ASSERTION}
-    WriteLN('Assertion failed: "' + aArgumentName + '" argument unassigned');
-    {$ENDIF}
-    raise EArgumentUnassigned.Create(aArgumentName);
-  end;
+    raise EUnassigned.Create(aVariableName, aVariableType);
 end;
 
-procedure AssertArgumentAssigned(const aPointer: pointer; const aArgumentName: string);
-begin
-  AssertArgumentAssigned(Assigned(aPointer), aArgumentName);
-end;
-
-function AssertIndexInBounds(const aMin, aIndex, aMax: integer;
-  const aMessage: string): boolean;
+procedure AssertIndexInBounds(const aMin, aIndex, aMax: integer;
+  const aMessage: string);
+var
+  result: boolean;
 begin
   result := (aMin <= aIndex) and (aIndex <= aMax);
   if not result then

@@ -11,18 +11,16 @@ uses
 
 type
 
-  IReleasable = interface
+  IReleasable = interface ['IReleasable']
     procedure Free;
   end;
 
-  IReversible = interface(IReleasable)
+  IReversible = interface(IReleasable) ['IReversible']
     function Reverse: TObject;
   end;
 
 
 implementation
-
-{ TDesinterfaced }
 
 end.
 

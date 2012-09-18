@@ -9,6 +9,7 @@ uses
   StrUtils;
 
 function ZeroToStr(const aInteger: integer; const aLength: integer): string; inline;
+function LeftSpaceStr(const aStr: string; const aLength: integer): string; inline;
 function CopyToPChar(const aString: string): PChar;
 function CopyPCharToString(const aChar: PChar): string;
 function StrHexToLongWord(const aText: string): LongWord;
@@ -57,6 +58,13 @@ begin
     'F': r := 15;
   end;
   result := r;
+end;
+
+function LeftSpaceStr(const aStr: string; const aLength: integer): string;
+begin
+  result := aStr;
+  while Length(result) < aLength do
+    result := ' ' + result;
 end;
 
 function CopyToPChar(const aString: string): PChar;

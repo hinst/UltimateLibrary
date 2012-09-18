@@ -12,6 +12,7 @@ uses
   SyncObjs,
   fgl,
 
+  NiceTypes,
   NiceExceptions,
   FPListEnhancer,
   ThreadEnhancer;
@@ -83,6 +84,7 @@ type
     function Sync(const aJob: IThreadJob): IThreadJob;
     procedure Add(const aJob: IThreadJob);
     procedure Terminate;
+    procedure NotUsedHere; inline;
     destructor Destroy; override;
   end;
 
@@ -178,7 +180,7 @@ end;
 
 procedure TJobThread.Execute(const aJob: IThreadJob);
 begin
-  AssertArgumentAssigned(aJob, 'aJob');
+  AssertAssigned(aJob, 'aJob', TVariableType.Argument);
   {$IFDEF WRITELN_DEBUG_JOB_EXECUTION}
   WriteLN('Now executing thread job...');
   {$ENDIF}
@@ -216,7 +218,7 @@ end;
 
 procedure TJobThread.Add(const aJob: IThreadJob);
 begin
-  AssertArgumentAssigned(aJob, 'aJob');
+  AssertAssigned(aJob, 'aJob', TVariableType.Argument);
   JobsCS.Enter;
   {$IFDEF WRITELN_DEBUG_JOB_ADDITION}
   WriteLN('Now adding job...');
@@ -228,6 +230,11 @@ end;
 procedure TJobThread.Terminate;
 begin
   fTerminated := true;
+end;
+
+procedure TJobThread.NotUsedHere;
+begin
+  // use this function in order to suppress "parameter not used" hints
 end;
 
 destructor TJobThread.Destroy;
