@@ -35,7 +35,7 @@
         <CompilerPath Value="$(CompPath)"/>
       </Other>
     </CompilerOptions>
-    <Files Count="30">
+    <Files Count="31">
       <Item1>
         <Filename Value="JobThread\JobThread.pas"/>
         <UnitName Value="JobThread"/>
@@ -156,6 +156,10 @@
         <Filename Value="Log\TextFileLogWriter.pas"/>
         <UnitName Value="TextFileLogWriter"/>
       </Item30>
+      <Item31>
+        <Filename Value="Math\DeltaApproachUnit.pas"/>
+        <UnitName Value="DeltaApproachUnit"/>
+      </Item31>
     </Files>
     <RequiredPkgs Count="1">
       <Item1>

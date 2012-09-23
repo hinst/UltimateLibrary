@@ -13,7 +13,7 @@ uses
   DebugInterfaces, DebugUtilities, IndependentTime, ConsoleLogWriter, 
   DefaultLogTextFormat, LogEntity, LogEntityFace, LogFormat, LogItem, 
   LogManager, LogObjectEnhancer, LogStandardConfig, LogTextFormat, LogWriter, 
-  NoLogEntity, SimpleLogTextFormat, TextFileLogWriter;
+  NoLogEntity, SimpleLogTextFormat, TextFileLogWriter, DeltaApproachUnit;
 
 implementation
 

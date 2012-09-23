@@ -19,7 +19,8 @@ type
   public
     property Value: single read fValue write fValue;
     procedure Random;
-    procedure Assign(const aX: single);
+    procedure AssignSingle(const aX: single);
+    procedure Assign(const aX: TAngle360);
     procedure AssignTo(out aX: single);
     procedure Inc(const aX: single);
     procedure Refresh;
@@ -36,12 +37,15 @@ operator = (const A, B: TAngle360): boolean;
 
 function MostCloseAngleDirection(const aCurrent, aDesired: TAngle360): shortint;
 
+function CalculateDesiredAngleForMovement(const aDeltaX, aDeltaY: integer): TAngle360;
+  inline;
+
 implementation
 
 operator := (const aX: single): TAngle360;
 begin
   result.Init;
-  result.Assign(aX);
+  result.AssignSingle(aX);
 end;
 
 operator := (const aX: TAngle360): single;
@@ -77,6 +81,27 @@ begin
     result := -1;
 end;
 
+function CalculateDesiredAngleForMovement(const aDeltaX, aDeltaY: integer): TAngle360;
+begin
+  if (aDeltaX = 0) and (aDeltaY = -1) then
+    result := 0;
+  if (aDeltaX = 0) and (aDeltaY = +1) then
+    result := 180;
+  if (aDeltaX = -1) and (aDeltaY = 0) then
+    result := -90;
+  if (aDeltaX = 1) and (aDeltaY = 0) then
+    result := 90;
+
+  if (aDeltaX = 1) and (aDeltaY = -1) then
+    result := 45;
+  if (aDeltaX = 1) and (aDeltaY = 1) then
+    result := 90 + 45;
+  if (aDeltaX = -1) and (aDeltaY = 1) then
+    result := -90 - 45;
+  if (aDeltaX = -1) and (aDeltaY = -1) then
+    result := -45;
+end;
+
 { TAngle360 }
 
 constructor TAngle360.Init;
@@ -89,9 +114,16 @@ begin
   Value := System.Random(360);
 end;
 
-procedure TAngle360.Assign(const aX: single);
+procedure TAngle360.AssignSingle(const aX: single);
 begin
   Value := aX;
+  Refresh;
+end;
+
+procedure TAngle360.Assign(const aX: TAngle360);
+begin
+  self.Value := aX.Value;
+  Refresh;
 end;
 
 procedure TAngle360.AssignTo(out aX: single);
@@ -123,7 +155,7 @@ begin
   self.Inc( aDelta * d1 );
   d2 := MostCloseAngleDirection(self, aDesiredAngle);
   if d1 <> d2 then
-    self := aDesiredAngle;
+    self.Assign(aDesiredAngle);
 end;
 
 end.
